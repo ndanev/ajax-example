@@ -9,21 +9,28 @@
 
 <body>
     <h1>Ajax Example 1</h1>
+    <h1>bla bla bla...</h1>
+    <button type="button" onclick="loadDoc()">Change Content</button>
     <div id="example">
 
-        <button type="button" onclick="loadDoc()">Change Content</button>
     </div>
 
     <script>
+
         function loadDoc() {
-            alert("Hello! I am an alert box!!");
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("example").innerHTML = this.responseText;
+                    var obj = JSON.parse(this.responseText);
+                    var standings = ''
+                    for (i in obj) {
+                        standings += "<div style='background-color:black;color:white;padding:20px;'>" + obj[i] + "</div>";
+                    }
+                    document.getElementById("example").innerHTML = standings;
                 }
             };
-            xhttp.open("GET", "/data", true);
+            xhttp.open("GET", "/standings", true);
+            xhttp.setRequestHeader("Accept", "application/json");
             xhttp.send();
         }
     </script>
