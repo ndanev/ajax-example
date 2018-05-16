@@ -10,14 +10,14 @@
 <body>
     <h1>Ajax Example 1</h1>
     <h1>bla bla bla...</h1>
-    <button type="button" onclick="loadDoc()">Change Content</button>
-    <div id="example">
+    <button type="button" onclick="loadStandings(); loadResults();">Change Content</button>
+    <div id="standings">
 
     </div>
 
     <script>
 
-        function loadDoc() {
+        function loadStandings() {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
@@ -26,10 +26,26 @@
                     for (i in obj) {
                         standings += "<div style='background-color:black;color:white;padding:20px;'>" + obj[i] + "</div>";
                     }
-                    document.getElementById("example").innerHTML = standings;
+                    document.getElementById("standings").innerHTML = standings;
                 }
             };
             xhttp.open("GET", "/standings", true);
+            xhttp.setRequestHeader("Accept", "application/json");
+            xhttp.send();
+        }
+        function loadResults() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var obj = JSON.parse(this.responseText);
+                    var results = ''
+                    for (i in obj) {
+                        results += "<div style='background-color:lightblue;color:white;padding:10px;'>" + obj[i] + "</div>";
+                    }
+                    document.etElementById("standings").innerHTML = results;
+                }
+            };
+            xhttp.open("GET", "/results", true);
             xhttp.setRequestHeader("Accept", "application/json");
             xhttp.send();
         }
