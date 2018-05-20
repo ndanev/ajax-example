@@ -20,6 +20,11 @@ app.get('/results', function (req, res) {
     results(res);
 })
 
+app.get('/login', function (req, res) {
+    login(res);
+})
+app.use(express.static('public'))
+
 
 
 var server = app.listen(80, function () {
@@ -28,6 +33,18 @@ var server = app.listen(80, function () {
 
     console.log("Example app listening at http://%s:%s", host, port)
 })
+
+
+function login(res) {
+    fs.readFile('./login.html', function (err, html) {
+        if (err) {
+            throw err;
+        }
+        res.writeHeader(200, { "Content-Type": "text/html" });
+        res.write(html);
+        res.end();
+    })
+}
 
 
 
