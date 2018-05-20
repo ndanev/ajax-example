@@ -3,24 +3,25 @@ var fs = require('fs');
 var express = require('express');
 var app = express();
 
-
-app.get('/data', function (req, res) {
-    data(res);
-})
-
-app.get('/standings', function (req, res) {
-    standings(res);
-})
-
-app.get('/results', function (req, res) {
-    results(res);
-})
-
-app.get('/login', function (req, res) {
-    login(res);
-})
 app.use(express.static('public'))
 
+var r1 = express.Router();
+r1.get('/data', function (req, res) {
+    data(res);
+})
+var r2 = express.Router();
+r2.get('/standings', function (req, res) {
+    standings(res);
+})
+var r3 = express.Router();
+r3.get('/results', function (req, res) {
+    results(res);
+})
+var r4 = express.Router();
+r4.get('/login', function (req, res) {
+    login(res);
+})
+app.use(r1, r2, r3, r4);
 
 
 var server = app.listen(80, function () {
