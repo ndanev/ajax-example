@@ -4,10 +4,6 @@ var express = require('express');
 var app = express();
 
 
-app.get('/', function (req, res) {
-    index(res);
-})
-
 app.get('/data', function (req, res) {
     data(res);
 })
@@ -46,20 +42,6 @@ function login(res) {
     })
 }
 
-
-
-function index(res) {
-    console.log('bla bla..');
-    fs.readFile('./index.html', function (err, html) {
-        if (err) {
-            throw err;
-        }
-        res.writeHeader(200, { "Content-Type": "text/html" });
-        res.write(html);
-        res.end();
-    })
-
-}
 
 function data(res) {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
