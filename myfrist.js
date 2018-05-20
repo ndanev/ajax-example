@@ -3,25 +3,34 @@ var fs = require('fs');
 var express = require('express');
 var app = express();
 
-app.use(express.static('public'))
+
+
+var pub = express.static('public');
+
+var auth = function (req, res, next) {
+    console.log("AUTH!");
+    next();
+};
+
 
 var r1 = express.Router();
 r1.get('/data', function (req, res) {
     data(res);
-})
+});
 var r2 = express.Router();
 r2.get('/standings', function (req, res) {
     standings(res);
-})
+});
 var r3 = express.Router();
 r3.get('/results', function (req, res) {
     results(res);
-})
+});
 var r4 = express.Router();
 r4.get('/login', function (req, res) {
     login(res);
-})
-app.use(r1, r2, r3, r4);
+});
+
+app.use(auth, pub, r1, r2, r3, r4);
 
 
 var server = app.listen(80, function () {
@@ -29,7 +38,7 @@ var server = app.listen(80, function () {
     var port = server.address().port
 
     console.log("Example app listening at http://%s:%s", host, port)
-})
+});
 
 
 function login(res) {
@@ -40,7 +49,7 @@ function login(res) {
         res.writeHeader(200, { "Content-Type": "text/html" });
         res.write(html);
         res.end();
-    })
+    });
 }
 
 
