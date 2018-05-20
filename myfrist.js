@@ -1,25 +1,35 @@
-var http = require('http');
-fs = require('fs');
 
-http.createServer(function (req, res) {
-    console.log(req.url);
-    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
-    res.setHeader("Pragma", "no-cache"); // HTTP 1.0.
-    res.setHeader("Expires", "0"); // Proxies.
-    if (req.url == "/") {
-        index(res);
-    }
-    if (req.url == "/data") {
-        data(res);
-    }
-    if (req.url == "/standings") {
-        standings(res);
-    }
-    if (req.url == "/results") {
-        results(res);
+var fs = require('fs');
+var express = require('express');
+var app = express();
 
-    }
-}).listen(80);
+
+app.get('/', function (req, res) {
+    index(res);
+})
+
+app.get('/data', function (req, res) {
+    data(res);
+})
+
+app.get('/standings', function (req, res) {
+    standings(res);
+})
+
+app.get('/results', function (req, res) {
+    results(res);
+})
+
+
+
+var server = app.listen(80, function () {
+    var host = server.address().address
+    var port = server.address().port
+
+    console.log("Example app listening at http://%s:%s", host, port)
+})
+
+
 
 function index(res) {
     console.log('bla bla..');
@@ -36,7 +46,7 @@ function index(res) {
 
 function data(res) {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('Hello World!');
+    res.end('I am Nemanja Danev...');
 
 }
 
