@@ -1,3 +1,5 @@
+# install dependencies
+npm install
 # start server 
 node myfrist.js
 # from the browser go to localhost
