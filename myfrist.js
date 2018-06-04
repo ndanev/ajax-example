@@ -5,12 +5,28 @@ var app = express();
 
 
 
+const { check, validationResult } = require('express-validator/check');
+const { matchedData, sanitize } = require('express-validator/filter');
+
+
+var myMap = new Map();
+
+myMap.set("nemanja", "nemanja123");
+myMap.set("gordana", "gordana123");
+myMap.set("toronto", "toronto123");
+
+// need check map if exist!
+
+
 var pub = express.static('public');
 
 var auth = function (req, res, next) {
     console.log("AUTH!");
+    check('ABCD', 'email is missing').isEmail().withMessage('must be an email').trim().normalizeEmail();
     next();
 };
+
+
 
 
 var r1 = express.Router();
@@ -26,11 +42,15 @@ r3.get('/results', function (req, res) {
     results(res);
 });
 var r4 = express.Router();
-r4.get('/login', function (req, res) {
-    login(res);
+r4.get('/loginform', function (req, res) {
+    loginform(res);
 });
+var r5 = express.Router();
+r5.get('/login', function (req, res) {
+    login(req, res);
+})
 
-app.use(auth, pub, r1, r2, r3, r4);
+app.use(auth, pub, r1, r2, r3, r4, r5);
 
 
 var server = app.listen(80, function () {
@@ -41,7 +61,7 @@ var server = app.listen(80, function () {
 });
 
 
-function login(res) {
+function loginform(res) {
     fs.readFile('./login.html', function (err, html) {
         if (err) {
             throw err;
@@ -52,6 +72,13 @@ function login(res) {
     });
 }
 
+
+function login(req, res){
+    var username = req.query.uname;
+    var password = req.query.psw;
+
+    console.log(username + password);
+}
 
 function data(res) {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
